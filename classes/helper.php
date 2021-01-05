@@ -35,12 +35,17 @@ defined('MOODLE_INTERNAL') || die();
  */
 class helper {
 
+    /**
+     * Option values for select lists.
+     */
     const DO_NOT_CHANGE = 'DO_NOT_CHANGE';
 
     /**
      * Check permissions, extract values for update and process bulk update.
      *
-     * @param string $categorypluscontext
+     * @param object $formdata
+     * @throws \coding_exception
+     * @throws \required_capability_exception
      */
     public function bulk_update($formdata) {
         $categorypluscontext = $formdata->categoryandcontext;
@@ -56,6 +61,10 @@ class helper {
     }
 
     /**
+     * Cleans form data.
+     * Removes values, that are not question options.
+     * Removes values, that should not be changed.
+     *
      * @param object $formdata
      * @return object
      */
@@ -116,6 +125,8 @@ class helper {
     }
 
     /**
+     * Updates single question
+     *
      * @param object $question
      * @param object $data
      * @param \context $context
@@ -143,13 +154,15 @@ class helper {
             $DB->update_record('question', $question);
             // Purge this question from the cache.
             \question_bank::notify_question_edited($question->id);
-            // Trigger event
+            // Trigger event.
             $event = \core\event\question_updated::create_from_question_instance($question, $context);
             $event->trigger();
         }
     }
 
     /**
+     * Updates values in question options table
+     *
      * @param object $question
      * @param object $data
      * @return bool true if options modified
@@ -164,6 +177,8 @@ class helper {
     }
 
     /**
+     * Extracts values, intended for specified question type
+     *
      * @param object $formdata
      * @param string $qtype
      * @return object
@@ -181,6 +196,8 @@ class helper {
     }
 
     /**
+     * Check if string starts with other string
+     *
      * @param string $haystack
      * @param string $needle
      * @return bool
@@ -191,6 +208,8 @@ class helper {
     }
 
     /**
+     * Updates question options for multichoice question
+     *
      * @param object $question
      * @param object $data
      * @return bool
@@ -200,6 +219,8 @@ class helper {
     }
 
     /**
+     * Updates question options in generic options table
+     *
      * @param object $question
      * @param object $data
      * @param string $table

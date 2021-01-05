@@ -56,7 +56,7 @@ class form extends \moodleform {
 
         $context = $this->_customdata['context'];
 
-        // Select category
+        // Select category.
         $this->definition_select_category($mform, $context);
 
         $this->strdonotchange = get_string('donotupdate', 'local_questionbulkupdate');
@@ -66,17 +66,19 @@ class form extends \moodleform {
             1 => get_string('yes')
         ];
 
-        // Common question options
+        // Common question options.
         $this->definition_common($mform);
 
-        // Multichoice options
+        // Multichoice options.
         $this->definition_multichoice($mform);
 
-        // Action buttons
+        // Action buttons.
         $this->add_action_buttons(true, get_string('updatequestions', 'local_questionbulkupdate'));
     }
 
     /**
+     * Definition for select category block.
+     *
      * @param \MoodleQuickForm $mform
      * @param \context $context
      * @throws \coding_exception
@@ -106,12 +108,12 @@ class form extends \moodleform {
     }
 
     /**
+     * Definition for common options block.
+     *
      * @param \MoodleQuickForm $mform
      * @throws \coding_exception
      */
     protected function definition_common($mform) {
-        global $OUTPUT;
-
         $mform->addElement('header', 'header', get_string('commonoptionsheader', 'local_questionbulkupdate'));
 
         $elements = [];
@@ -143,6 +145,8 @@ class form extends \moodleform {
     }
 
     /**
+     * Definition for multichoice question options.
+     *
      * @param \MoodleQuickForm $mform
      * @throws \coding_exception
      */
