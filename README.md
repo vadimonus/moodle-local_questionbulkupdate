@@ -11,7 +11,7 @@ Copy the questionbulkupdate folder into your Moodle /local directory and visit y
 
 Usage
 -----
-This plugin is intended to update questions after import from formats, that do not allow to specify numbering, or
+This plugin is intended to update questions after import from formats, that do not allow to specify numbering or
 default grade. Question bank navigation node will be extended with "Questions bulk update" item. Select category with
 desired questions and fill options, that you want to update.
 
