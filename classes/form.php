@@ -114,15 +114,24 @@ class form extends \moodleform {
      * @throws \coding_exception
      */
     protected function definition_common($mform) {
+        global $CFG;
+
         $mform->addElement('header', 'header', get_string('commonoptionsheader', 'local_questionbulkupdate'));
+
+        if ($CFG->version >= 2019052000.00) { // Moodle 3.7.
+            $floattype = 'float';
+        }        else{
+            $floattype = 'text';
+        }
 
         $elements = [];
         $elements[] = $mform->createElement(
-            'float',
+            $floattype,
             'defaultmark',
             get_string('defaultmark', 'question'),
             ['size' => 7]
         );
+        $mform->setType('defaultmark', PARAM_FLOAT);
         $mform->disabledIf('defaultmark', 'donotupdate_defaultmark', 'checked');
         $elements[] = $mform->createElement(
             'checkbox',

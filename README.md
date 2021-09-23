@@ -28,3 +28,5 @@ Changes
 -------
 - Release 0.9 (build 2021010500):
     - Initial release.
+- Release 1.0 (build 2021092400):
+    - Fix form error on 3.0 - 3.6.
