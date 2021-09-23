@@ -120,7 +120,7 @@ class form extends \moodleform {
 
         if ($CFG->version >= 2019052000.00) { // Moodle 3.7.
             $floattype = 'float';
-        }        else{
+        } else {
             $floattype = 'text';
         }
 
