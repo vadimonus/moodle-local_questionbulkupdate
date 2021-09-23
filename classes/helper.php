@@ -57,7 +57,8 @@ class helper {
             $onlymine = true;
         }
         $data = $this->data_for_update($formdata);
-        $this->update_questions_in_category($categoryid, $context, $formdata->includingsubcategories, $onlymine, $data);
+        $count = $this->update_questions_in_category($categoryid, $context, $formdata->includingsubcategories, $onlymine, $data);
+        \core\notification::success(get_string('processed', 'local_questionbulkupdate', $count));
     }
 
     /**
@@ -92,6 +93,7 @@ class helper {
      * @param bool $includingsubcategories
      * @param bool $onlymine
      * @param object $data
+     * @return int
      */
     protected function update_questions_in_category($categoryid, $context, $includingsubcategories, $onlymine, $data) {
         global $DB, $USER;
@@ -103,13 +105,15 @@ class helper {
             $conditions['createdby'] = $USER->id;
         }
         $questions = $DB->get_recordset('question', $conditions);
+        $count = 0;
         foreach ($questions as $question) {
             $this->update_question($question, $data, $context);
+            $count++;
         }
         $questions->close();
 
         if (!$includingsubcategories) {
-            return;
+            return $count;
         }
         $subcategories = $DB->get_records(
             'question_categories',
@@ -120,8 +124,9 @@ class helper {
             'name ASC'
         );
         foreach ($subcategories as $subcategory) {
-            $this->update_questions_in_category($subcategory->id, $context, $includingsubcategories, $onlymine, $data);
+            $count += $this->update_questions_in_category($subcategory->id, $context, $includingsubcategories, $onlymine, $data);
         }
+        return $count;
     }
 
     /**
@@ -133,7 +138,7 @@ class helper {
      * @return void
      */
     protected function update_question($question, $data, $context) {
-        global $DB, $USER;
+        global $CFG, $DB, $USER;
 
         $modified = false;
         foreach ($data as $key => $value) {
@@ -155,8 +160,10 @@ class helper {
             // Purge this question from the cache.
             \question_bank::notify_question_edited($question->id);
             // Trigger event.
-            $event = \core\event\question_updated::create_from_question_instance($question, $context);
-            $event->trigger();
+            if ($CFG->version >= 2019052000.00) { // Moodle 3.7.
+                $event = \core\event\question_updated::create_from_question_instance($question, $context);
+                $event->trigger();
+            }
         }
     }
 

@@ -27,5 +27,6 @@ $string['donotupdate'] = 'Не изменять';
 $string['navandheader'] = 'Массовое обновление вопросов';
 $string['pluginname'] = 'Массовое обновление вопросов';
 $string['privacy:metadata'] = 'Плагин не хранит персональные данные.';
+$string['processed'] = 'Обработано вопросов: {$a}';
 $string['selectcategoryheader'] = 'Выберите категорию для обновления вопросов';
 $string['updatequestions'] = 'Обновить вопросы';

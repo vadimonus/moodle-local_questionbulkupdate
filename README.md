@@ -3,7 +3,7 @@ Questions bulk update Moodle plugin
 
 Requirements
 ------------
-- Moodle 3.0 (build 2015111600) or later.
+- Moodle 3.1 (build 2016052300) or later.
 
 Installation
 ------------
@@ -29,4 +29,4 @@ Changes
 - Release 0.9 (build 2021010500):
     - Initial release.
 - Release 1.0 (build 2021092400):
-    - Fix form error on 3.0 - 3.6.
+    - Fix errors in 3.1 - 3.6.
