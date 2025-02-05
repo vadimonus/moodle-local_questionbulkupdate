@@ -43,29 +43,45 @@ function qbank_bulkupdate_extend_navigation_frontpage(navigation_node $coursenod
  */
 function qbank_bulkupdate_extend_navigation_course(navigation_node $coursenode, stdClass $course,
         context $context) {
+    global $CFG, $PAGE;
+
+    if ($CFG->version >= 2023100900.00) { // Moodle 4.3
+        // Since Moodle 4.3 question bank action menu can show plugins.
+        return;
+    }
+
     if (!has_capability('moodle/question:editall', $context)
         && !has_capability('moodle/question:editmine', $context)
     ) {
         return;
     }
-    /** @var navigation_node|null $questionbank */
-    $questionbank = null;
-    foreach ($coursenode->children as $node) {
-        if ($node->text == get_string('questionbank', 'question')) {
-            $questionbank = $node;
-            break;
-        }
-    }
-    if (!$questionbank) {
-        return;
-    }
     $url = new moodle_url('/question/bank/bulkupdate/bulkupdate.php', ['courseid' => $context->instanceid]);
-    $questionbank->add(
-        get_string('navandheader', 'qbank_bulkupdate'),
+    $coursenode->add(
+        get_string('qbankbulkupdate', 'qbank_bulkupdate'),
         $url,
         navigation_node::TYPE_SETTING,
         null,
-        'questionbulkupdate'
+        'qbankbulkupdate'
+    );
+
+    // Quiz module navigation.
+    if (!$PAGE->cm || $PAGE->cm->modname != 'quiz') {
+        return;
+    }
+    $context = $PAGE->cm->context;
+    if (!has_capability('moodle/question:editall', $context)
+        && !has_capability('moodle/question:editmine', $context)
+    ) {
+        return;
+    }
+    $parentnode = $coursenode->parent->get('modulesettings');
+    $url = new moodle_url('/question/bank/bulkupdate/bulkupdate.php', ['cmid' => $context->instanceid]);
+    $parentnode->add(
+        get_string('qbankbulkupdate', 'qbank_bulkupdate'),
+        $url,
+        navigation_node::TYPE_SETTING,
+        null,
+        'qbankbulkupdate'
     );
 }
 

@@ -28,5 +28,6 @@ $string['navandheader'] = 'Questions bulk update';
 $string['pluginname'] = 'Questions bulk update';
 $string['privacy:metadata'] = 'The plugin does not store any personal data.';
 $string['processed'] = '{$a} questions processed';
+$string['qbankbulkupdate'] = 'Question bank: Questions bulk update';
 $string['selectcategoryheader'] = 'Select category to update questions';
 $string['updatequestions'] = 'Update questions';
