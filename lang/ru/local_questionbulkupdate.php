@@ -17,7 +17,7 @@
 /**
  * Tool for questions bulk update.
  *
- * @package    local_questionbulkupdate
+ * @package    qbank_bulkupdate
  * @copyright  2021 Vadim Dvorovenko <Vadimon@mail.ru>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */

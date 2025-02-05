@@ -21,8 +21,8 @@ Author
 
 Links
 -----
-- Updates: https://moodle.org/plugins/view.php?plugin=local_questionbulkupdate
-- Latest code: https://github.com/vadimonus/moodle-local_questionbulkupdate
+- Updates: https://moodle.org/plugins/view.php?plugin=qbank_bulkupdate
+- Latest code: https://github.com/vadimonus/moodle-qbank_bulkupdate
 
 Changes
 -------

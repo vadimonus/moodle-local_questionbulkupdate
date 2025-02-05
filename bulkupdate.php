@@ -17,7 +17,7 @@
 /**
  * Tool for questions bulk update.
  *
- * @package    local_questionbulkupdate
+ * @package    qbank_bulkupdate
  * @copyright  2021 Vadim Dvorovenko <Vadimon@mail.ru>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -47,16 +47,16 @@ if (!has_capability('moodle/question:editall', $context)) {
 $PAGE->set_pagelayout('admin');
 $url = new moodle_url('/local/questionbulkupdate/bulkupdate.php', $pageparams);
 $PAGE->set_url($url);
-$PAGE->set_title(get_string('navandheader', 'local_questionbulkupdate'));
+$PAGE->set_title(get_string('navandheader', 'qbank_bulkupdate'));
 $PAGE->set_heading($COURSE->fullname);
 
-$mform = new \local_questionbulkupdate\form($url, array('context' => $context));
+$mform = new \qbank_bulkupdate\form($url, array('context' => $context));
 
 if ($mform->is_cancelled()) {
     redirect(new moodle_url('/question/edit.php', $pageparams));
 } else if ($data = $mform->get_data()) {
     require_sesskey();
-    $helper = new \local_questionbulkupdate\helper();
+    $helper = new \qbank_bulkupdate\helper();
     $helper->bulk_update($data);
     redirect(new moodle_url('/question/edit.php', $pageparams));
 }
@@ -69,6 +69,6 @@ if ($CFG->version >= 2016120503.00) { // Moodle 3.2.3.
     echo $renderer->extra_horizontal_navigation();
 }
 
-echo $OUTPUT->heading(get_string('navandheader', 'local_questionbulkupdate'));
+echo $OUTPUT->heading(get_string('navandheader', 'qbank_bulkupdate'));
 $mform->display();
 echo $OUTPUT->footer();

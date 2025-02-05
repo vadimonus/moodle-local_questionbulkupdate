@@ -17,14 +17,14 @@
 /**
  * Tool for questions bulk update.
  *
- * @package    local_questionbulkupdate
+ * @package    qbank_bulkupdate
  * @copyright  2021 Vadim Dvorovenko <Vadimon@mail.ru>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->component = 'local_questionbulkupdate';
+$plugin->component = 'qbank_bulkupdate';
 $plugin->version   = 2021092402;
 $plugin->release = '1.0';
 $plugin->maturity = MATURITY_STABLE;

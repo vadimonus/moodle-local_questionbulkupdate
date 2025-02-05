@@ -17,12 +17,12 @@
 /**
  * Tool for questions bulk update.
  *
- * @package    local_questionbulkupdate
+ * @package    qbank_bulkupdate
  * @copyright  2021 Vadim Dvorovenko <Vadimon@mail.ru>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_questionbulkupdate;
+namespace qbank_bulkupdate;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -33,7 +33,7 @@ require_once($CFG->dirroot . '/question/type/multichoice/questiontype.php');
 /**
  * Form for selecting category and question options.
  *
- * @package    local_questionbulkupdate
+ * @package    qbank_bulkupdate
  * @copyright  2021 Vadim Dvorovenko <Vadimon@mail.ru>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -59,7 +59,7 @@ class form extends \moodleform {
         // Select category.
         $this->definition_select_category($mform, $context);
 
-        $this->strdonotchange = get_string('donotupdate', 'local_questionbulkupdate');
+        $this->strdonotchange = get_string('donotupdate', 'qbank_bulkupdate');
         $this->yesnodonotchange = [
             helper::DO_NOT_CHANGE => $this->strdonotchange,
             0 => get_string('no'),
@@ -73,7 +73,7 @@ class form extends \moodleform {
         $this->definition_multichoice($mform);
 
         // Action buttons.
-        $this->add_action_buttons(true, get_string('updatequestions', 'local_questionbulkupdate'));
+        $this->add_action_buttons(true, get_string('updatequestions', 'qbank_bulkupdate'));
     }
 
     /**
@@ -84,7 +84,7 @@ class form extends \moodleform {
      * @throws \coding_exception
      */
     protected function definition_select_category(\MoodleQuickForm $mform, $context) {
-        $mform->addElement('header', 'header', get_string('selectcategoryheader', 'local_questionbulkupdate'));
+        $mform->addElement('header', 'header', get_string('selectcategoryheader', 'qbank_bulkupdate'));
 
         $qcontexts = new \question_edit_contexts($context);
         $contexts = $qcontexts->having_one_cap([
@@ -116,7 +116,7 @@ class form extends \moodleform {
     protected function definition_common($mform) {
         global $CFG;
 
-        $mform->addElement('header', 'header', get_string('commonoptionsheader', 'local_questionbulkupdate'));
+        $mform->addElement('header', 'header', get_string('commonoptionsheader', 'qbank_bulkupdate'));
 
         if ($CFG->version >= 2019052000.00) { // Moodle 3.7.
             $floattype = 'float';
@@ -136,7 +136,7 @@ class form extends \moodleform {
         $elements[] = $mform->createElement(
             'checkbox',
             'donotupdate_defaultmark',
-            get_string('donotupdate', 'local_questionbulkupdate')
+            get_string('donotupdate', 'qbank_bulkupdate')
         );
         $mform->setDefault('donotupdate_defaultmark', true);
         $mform->addGroup($elements, null, get_string('defaultmark', 'question'));
@@ -175,7 +175,7 @@ class form extends \moodleform {
             'multichoice_answernumbering',
             get_string('answernumbering', 'qtype_multichoice'),
             array_merge(
-                [-1 => get_string('donotupdate', 'local_questionbulkupdate')],
+                [-1 => get_string('donotupdate', 'qbank_bulkupdate')],
                 \qtype_multichoice::get_numbering_styles()
             )
         );

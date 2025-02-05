@@ -17,19 +17,19 @@
 /**
  * Tool for questions bulk update.
  *
- * @package    local_questionbulkupdate
+ * @package    qbank_bulkupdate
  * @copyright  2021 Vadim Dvorovenko <Vadimon@mail.ru>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_questionbulkupdate;
+namespace qbank_bulkupdate;
 
 defined('MOODLE_INTERNAL') || die();
 
 /**
  * Helper class for updating questions
  *
- * @package    local_questionbulkupdate
+ * @package    qbank_bulkupdate
  * @copyright  2021 Vadim Dvorovenko <Vadimon@mail.ru>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -58,7 +58,7 @@ class helper {
         }
         $data = $this->data_for_update($formdata);
         $count = $this->update_questions_in_category($categoryid, $context, $formdata->includingsubcategories, $onlymine, $data);
-        \core\notification::success(get_string('processed', 'local_questionbulkupdate', $count));
+        \core\notification::success(get_string('processed', 'qbank_bulkupdate', $count));
     }
 
     /**

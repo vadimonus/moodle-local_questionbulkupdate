@@ -17,7 +17,7 @@
 /**
  * Tool for questions bulk update.
  *
- * @package    local_questionbulkupdate
+ * @package    qbank_bulkupdate
  * @copyright  2021 Vadim Dvorovenko <Vadimon@mail.ru>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -31,9 +31,9 @@ defined('MOODLE_INTERNAL') || die;
  * @param stdClass $course frontpage course object
  * @param context $context frontpage course context object
  */
-function local_questionbulkupdate_extend_navigation_frontpage(navigation_node $coursenode, stdClass $course,
+function qbank_bulkupdate_extend_navigation_frontpage(navigation_node $coursenode, stdClass $course,
         context $context) {
-    local_questionbulkupdate_extend_navigation_course($coursenode, $course, $context);
+    qbank_bulkupdate_extend_navigation_course($coursenode, $course, $context);
 }
 
 /**
@@ -43,7 +43,7 @@ function local_questionbulkupdate_extend_navigation_frontpage(navigation_node $c
  * @param stdClass $course course object
  * @param context $context course context object
  */
-function local_questionbulkupdate_extend_navigation_course(navigation_node $coursenode, stdClass $course,
+function qbank_bulkupdate_extend_navigation_course(navigation_node $coursenode, stdClass $course,
         context $context) {
     if (!has_capability('moodle/question:editall', $context)
         && !has_capability('moodle/question:editmine', $context)
@@ -63,7 +63,7 @@ function local_questionbulkupdate_extend_navigation_course(navigation_node $cour
     }
     $url = new moodle_url('/local/questionbulkupdate/bulkupdate.php', array('courseid' => $context->instanceid));
     $questionbank->add(
-        get_string('navandheader', 'local_questionbulkupdate'),
+        get_string('navandheader', 'qbank_bulkupdate'),
         $url,
         navigation_node::TYPE_SETTING,
         null,
@@ -77,7 +77,7 @@ function local_questionbulkupdate_extend_navigation_course(navigation_node $cour
  * @param navigation_node $nav navigation node object
  * @param context $context course context object
  */
-function local_questionbulkupdate_extend_settings_navigation(navigation_node $nav, context $context) {
+function qbank_bulkupdate_extend_settings_navigation(navigation_node $nav, context $context) {
     if (!has_capability('moodle/question:editall', $context)
         && !has_capability('moodle/question:editmine', $context)
     ) {
@@ -100,7 +100,7 @@ function local_questionbulkupdate_extend_settings_navigation(navigation_node $na
     }
     $url = new moodle_url('/local/questionbulkupdate/bulkupdate.php', array('cmid' => $context->instanceid));
     $questionbank->add(
-        get_string('navandheader', 'local_questionbulkupdate'),
+        get_string('navandheader', 'qbank_bulkupdate'),
         $url,
         navigation_node::TYPE_SETTING,
         null,
