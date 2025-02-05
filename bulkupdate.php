@@ -45,7 +45,7 @@ if (!has_capability('moodle/question:editall', $context)) {
 }
 
 $PAGE->set_pagelayout('admin');
-$url = new moodle_url('/local/questionbulkupdate/bulkupdate.php', $pageparams);
+$url = new moodle_url('/question/bank/bulkupdate/bulkupdate.php', $pageparams);
 $PAGE->set_url($url);
 $PAGE->set_title(get_string('navandheader', 'qbank_bulkupdate'));
 $PAGE->set_heading($COURSE->fullname);
