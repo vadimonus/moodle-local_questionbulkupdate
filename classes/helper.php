@@ -24,8 +24,6 @@
 
 namespace qbank_bulkupdate;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Helper class for updating questions
  *

@@ -24,8 +24,6 @@
 
 namespace qbank_bulkupdate\privacy;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Privacy provider
  *
