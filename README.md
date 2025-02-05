@@ -7,7 +7,7 @@ Requirements
 
 Installation
 ------------
-Copy the questionbulkupdate folder into your Moodle /local directory and visit your Admin Notification page to complete the installation.
+Copy the bulkupdate folder into your Moodle /question/bank directory and visit your Admin Notification page to complete the installation.
 
 Usage
 -----
