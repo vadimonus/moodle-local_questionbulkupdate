@@ -61,7 +61,7 @@ function qbank_bulkupdate_extend_navigation_course(navigation_node $coursenode, 
     if (!$questionbank) {
         return;
     }
-    $url = new moodle_url('/question/bank/bulkupdate/bulkupdate.php', array('courseid' => $context->instanceid));
+    $url = new moodle_url('/question/bank/bulkupdate/bulkupdate.php', ['courseid' => $context->instanceid]);
     $questionbank->add(
         get_string('navandheader', 'qbank_bulkupdate'),
         $url,
@@ -98,7 +98,7 @@ function qbank_bulkupdate_extend_settings_navigation(navigation_node $nav, conte
     if (!$questionbank) {
         return;
     }
-    $url = new moodle_url('/question/bank/bulkupdate/bulkupdate.php', array('cmid' => $context->instanceid));
+    $url = new moodle_url('/question/bank/bulkupdate/bulkupdate.php', ['cmid' => $context->instanceid]);
     $questionbank->add(
         get_string('navandheader', 'qbank_bulkupdate'),
         $url,

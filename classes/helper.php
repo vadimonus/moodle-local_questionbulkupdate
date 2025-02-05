@@ -49,7 +49,7 @@ class helper {
      */
     public function bulk_update($formdata) {
         $categorypluscontext = $formdata->categoryandcontext;
-        list($categoryid, $contextid) = explode(',', $categorypluscontext);
+        [$categoryid, $contextid] = explode(',', $categorypluscontext);
         $context = \context::instance_by_id($contextid);
         $onlymine = false;
         if (!has_capability('moodle/question:editall', $context)) {

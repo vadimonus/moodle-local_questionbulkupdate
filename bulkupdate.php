@@ -27,14 +27,14 @@ require_once("$CFG->dirroot/question/editlib.php");
 
 $cmid = optional_param('cmid', 0, PARAM_INT);
 if ($cmid) {
-    $pageparams = array('cmid' => $cmid);
-    list($module, $cm) = get_module_from_cmid($cmid);
+    $pageparams = ['cmid' => $cmid];
+    [$module, $cm] = get_module_from_cmid($cmid);
     require_login($cm->course, false, $cm);
     $PAGE->set_cm($cm);
     $context = context_module::instance($cmid);
 } else {
     $courseid = required_param('courseid', PARAM_INT);
-    $pageparams = array('courseid' => $courseid);
+    $pageparams = ['courseid' => $courseid];
     $course = get_course($courseid);
     require_login($course);
     $PAGE->set_course($course);
@@ -50,7 +50,7 @@ $PAGE->set_url($url);
 $PAGE->set_title(get_string('navandheader', 'qbank_bulkupdate'));
 $PAGE->set_heading($COURSE->fullname);
 
-$mform = new \qbank_bulkupdate\form($url, array('context' => $context));
+$mform = new \qbank_bulkupdate\form($url, ['context' => $context]);
 
 if ($mform->is_cancelled()) {
     redirect(new moodle_url('/question/edit.php', $pageparams));

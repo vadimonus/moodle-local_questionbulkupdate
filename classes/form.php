@@ -92,7 +92,7 @@ class form extends \moodleform {
             'moodle/question:editmine'
         ]);
 
-        $options = array();
+        $options = [];
         $options['contexts'] = $contexts;
         $options['top'] = true;
         $mform->addElement('questioncategory', 'categoryandcontext', get_string('category', 'question'), $options);

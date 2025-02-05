@@ -29,6 +29,6 @@ $plugin->version   = 2021092402;
 $plugin->release = '1.0';
 $plugin->maturity = MATURITY_STABLE;
 $plugin->requires  = 2016052300; // Moodle 3.1.
-$plugin->dependencies = array(
+$plugin->dependencies = [
     'qtype_multichoice' => 2015111600,
-);
+];
