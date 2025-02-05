@@ -63,7 +63,7 @@ class form extends \moodleform {
         $this->yesnodonotchange = [
             helper::DO_NOT_CHANGE => $this->strdonotchange,
             0 => get_string('no'),
-            1 => get_string('yes')
+            1 => get_string('yes'),
         ];
 
         // Common question options.
@@ -89,7 +89,7 @@ class form extends \moodleform {
         $qcontexts = new \question_edit_contexts($context);
         $contexts = $qcontexts->having_one_cap([
             'moodle/question:editall',
-            'moodle/question:editmine'
+            'moodle/question:editmine',
         ]);
 
         $options = [];

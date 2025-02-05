@@ -119,7 +119,7 @@ class helper {
             'question_categories',
             [
                 'parent' => $categoryid,
-                'contextid' => $context->id
+                'contextid' => $context->id,
             ],
             'name ASC'
         );
