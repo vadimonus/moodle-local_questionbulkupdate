@@ -64,8 +64,7 @@ if ($mform->is_cancelled()) {
     redirect(new moodle_url('/question/edit.php', $pageparams));
 } else if ($data = $mform->get_data()) {
     require_sesskey();
-    $helper = new helper();
-    $helper->bulk_update($data);
+    helper::bulk_update($data);
     redirect(new moodle_url('/question/edit.php', $pageparams));
 }
 

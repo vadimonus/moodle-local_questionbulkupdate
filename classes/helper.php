@@ -24,6 +24,12 @@
 
 namespace qbank_bulkupdate;
 
+use context;
+use core\event\question_updated;
+use core\notification;
+use question_bank;
+use stdClass;
+
 /**
  * Helper class for updating questions
  *
@@ -36,7 +42,7 @@ class helper {
     /**
      * Option values for select lists.
      */
-    const DO_NOT_CHANGE = 'DO_NOT_CHANGE';
+    public const DO_NOT_CHANGE = 'DO_NOT_CHANGE';
 
     /**
      * Check permissions, extract values for update and process bulk update.
@@ -45,18 +51,18 @@ class helper {
      * @throws \coding_exception
      * @throws \required_capability_exception
      */
-    public function bulk_update($formdata) {
+    public static function bulk_update($formdata) {
         $categorypluscontext = $formdata->categoryandcontext;
         [$categoryid, $contextid] = explode(',', $categorypluscontext);
-        $context = \context::instance_by_id($contextid);
+        $context = context::instance_by_id($contextid);
         $onlymine = false;
         if (!has_capability('moodle/question:editall', $context)) {
             require_capability('moodle/question:editmine', $context);
             $onlymine = true;
         }
-        $data = $this->data_for_update($formdata);
-        $count = $this->update_questions_in_category($categoryid, $context, $formdata->includingsubcategories, $onlymine, $data);
-        \core\notification::success(get_string('processed', 'qbank_bulkupdate', $count));
+        $data = static::data_for_update($formdata);
+        $count = static::update_questions_in_category($categoryid, $context, $formdata->includingsubcategories, $onlymine, $data);
+        notification::success(get_string('processed', 'qbank_bulkupdate', $count));
     }
 
     /**
@@ -67,7 +73,7 @@ class helper {
      * @param object $formdata
      * @return object
      */
-    protected function data_for_update($formdata) {
+    protected static function data_for_update($formdata) {
         $cleardata = clone $formdata;
         unset($cleardata->categoryandcontext);
         unset($cleardata->includingsubcategories);
@@ -75,7 +81,7 @@ class helper {
         foreach ($cleardata as $key => $value) {
             if (self::DO_NOT_CHANGE == $value
                 || !empty($formdata->{'donotupdate_' . $key})
-                || $this->starts_with('donotupdate_', $key)
+                || static::starts_with('donotupdate_', $key)
             ) {
                 unset($cleardata->$key);
             }
@@ -87,13 +93,13 @@ class helper {
      * Recursively update questions in category and subcategories
      *
      * @param int $categoryid
-     * @param \context $context
+     * @param context $context
      * @param bool $includingsubcategories
      * @param bool $onlymine
      * @param object $data
      * @return int
      */
-    protected function update_questions_in_category($categoryid, $context, $includingsubcategories, $onlymine, $data) {
+    protected static function update_questions_in_category($categoryid, $context, $includingsubcategories, $onlymine, $data) {
         global $DB, $USER;
 
         $conditions = [
@@ -105,7 +111,7 @@ class helper {
         $questions = $DB->get_recordset('question', $conditions);
         $count = 0;
         foreach ($questions as $question) {
-            $this->update_question($question, $data, $context);
+            static::update_question($question, $data, $context);
             $count++;
         }
         $questions->close();
@@ -122,7 +128,7 @@ class helper {
             'name ASC'
         );
         foreach ($subcategories as $subcategory) {
-            $count += $this->update_questions_in_category($subcategory->id, $context, $includingsubcategories, $onlymine, $data);
+            $count += static::update_questions_in_category($subcategory->id, $context, $includingsubcategories, $onlymine, $data);
         }
         return $count;
     }
@@ -132,11 +138,11 @@ class helper {
      *
      * @param object $question
      * @param object $data
-     * @param \context $context
+     * @param context $context
      * @return void
      */
-    protected function update_question($question, $data, $context) {
-        global $CFG, $DB, $USER;
+    protected static function update_question($question, $data, $context) {
+        global $DB, $USER;
 
         $modified = false;
         foreach ($data as $key => $value) {
@@ -146,7 +152,7 @@ class helper {
             }
         }
 
-        $optionsmodified = $this->update_question_options($question, $data);
+        $optionsmodified = static::update_question_options($question, $data);
         $modified = $modified || $optionsmodified;
 
         if ($modified) {
@@ -156,12 +162,10 @@ class helper {
             $question->version = question_hash($question);
             $DB->update_record('question', $question);
             // Purge this question from the cache.
-            \question_bank::notify_question_edited($question->id);
+            question_bank::notify_question_edited($question->id);
             // Trigger event.
-            if ($CFG->version >= 2019052000.00) { // Moodle 3.7.
-                $event = \core\event\question_updated::create_from_question_instance($question, $context);
-                $event->trigger();
-            }
+            $event = question_updated::create_from_question_instance($question, $context);
+            $event->trigger();
         }
     }
 
@@ -172,10 +176,10 @@ class helper {
      * @param object $data
      * @return bool true if options modified
      */
-    protected function update_question_options($question, $data) {
+    protected static function update_question_options($question, $data) {
         switch ($question->qtype) {
             case 'multichoice':
-                return $this->update_multichoice_options($question, $this->data_for_options_update($data, 'multichoice'));
+                return static::update_multichoice_options($question, static::data_for_options_update($data, 'multichoice'));
             default:
                 return false;
         }
@@ -188,10 +192,10 @@ class helper {
      * @param string $qtype
      * @return object
      */
-    protected function data_for_options_update($formdata, $qtype) {
-        $optionsdata = new \stdClass();
+    protected static function data_for_options_update($formdata, $qtype) {
+        $optionsdata = new stdClass();
         foreach ($formdata as $key => $value) {
-            if (!$this->starts_with($key, $qtype . '_')) {
+            if (!static::starts_with($key, $qtype . '_')) {
                 continue;
             }
             $optionkey = substr($key, strlen($qtype . '_'));
@@ -207,7 +211,7 @@ class helper {
      * @param string $needle
      * @return bool
      */
-    protected function starts_with($haystack, $needle) {
+    protected static function starts_with($haystack, $needle) {
         $length = strlen($needle);
         return substr($haystack, 0, $length) === $needle;
     }
@@ -219,8 +223,8 @@ class helper {
      * @param object $data
      * @return bool
      */
-    protected function update_multichoice_options($question, $data) {
-        return $this->update_generic_options_table($question, $data, 'qtype_multichoice_options');
+    protected static function update_multichoice_options($question, $data) {
+        return static::update_generic_options_table($question, $data, 'qtype_multichoice_options');
     }
 
     /**
@@ -231,7 +235,7 @@ class helper {
      * @param string $table
      * @throws \dml_exception
      */
-    protected function update_generic_options_table($question, $data, $table) {
+    protected static function update_generic_options_table($question, $data, $table) {
         global $DB;
         $options = $DB->get_record($table, ['questionid' => $question->id]);
         foreach ($data as $key => $value) {
