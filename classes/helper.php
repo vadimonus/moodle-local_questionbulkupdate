@@ -28,6 +28,7 @@ use context;
 use core\event\question_created;
 use core\event\question_updated;
 use core\notification;
+use core_question\local\bank\question_version_status;
 use question_bank;
 use stdClass;
 
@@ -103,13 +104,22 @@ class helper {
     protected static function update_questions_in_category($categoryid, $context, $includingsubcategories, $onlymine, $data) {
         global $DB, $USER;
 
-        $conditions = [
-            'category' => $categoryid,
+        $sql = "SELECT q.*
+              FROM {question} q
+              JOIN {question_versions} qv ON qv.questionid = q.id
+              JOIN {question_bank_entries} qbe ON qbe.id = qv.questionbankentryid
+            WHERE qbe.questioncategoryid = :categoryid
+              AND qv.status IN (:statusready, :statusdraft)";
+        $params = [
+            'categoryid' => $categoryid,
+            'statusready' => question_version_status::QUESTION_STATUS_READY,
+            'statusdraft' => question_version_status::QUESTION_STATUS_DRAFT,
         ];
         if ($onlymine) {
-            $conditions['createdby'] = $USER->id;
+            $sql .= " AND q.createdby = :createdby";
+            $params['createdby'] = $USER->id;
         }
-        $questions = $DB->get_recordset('question', $conditions);
+        $questions = $DB->get_recordset_sql($sql, $params);
         $count = 0;
         foreach ($questions as $question) {
             static::update_question($question, $data, $context);
