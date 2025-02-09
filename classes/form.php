@@ -171,7 +171,7 @@ class form extends moodleform {
             'multichoice_answernumbering',
             get_string('answernumbering', 'qtype_multichoice'),
             array_merge(
-                [-1 => get_string('donotupdate', 'qbank_bulkupdate')],
+                [helper::DO_NOT_CHANGE => $this->strdonotchange],
                 qtype_multichoice::get_numbering_styles()
             )
         );
