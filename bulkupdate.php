@@ -26,6 +26,7 @@ require_once("../../../config.php");
 require_once("$CFG->dirroot/question/editlib.php");
 
 use core_question\local\bank\helper as core_question_local_bank_helper;
+use core_question\output\qbank_action_menu;
 
 require_login();
 core_question_local_bank_helper::require_plugin_enabled('qbank_bulkupdate');
@@ -67,12 +68,9 @@ if ($mform->is_cancelled()) {
 }
 
 echo $OUTPUT->header();
-
-if ($CFG->version >= 2016120503.00) { // Moodle 3.2.3.
-    // Print horizontal nav if needed.
-    $renderer = $PAGE->get_renderer('core_question', 'bank');
-    echo $renderer->extra_horizontal_navigation();
-}
+$renderer = $PAGE->get_renderer('core_question', 'bank');
+$qbankaction = new qbank_action_menu($url);
+echo $renderer->render($qbankaction);
 
 echo $OUTPUT->heading(get_string('navandheader', 'qbank_bulkupdate'));
 $mform->display();
