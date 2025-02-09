@@ -82,7 +82,7 @@ class helper {
         foreach ($cleardata as $key => $value) {
             if (self::DO_NOT_CHANGE == $value
                 || !empty($formdata->{'donotupdate_' . $key})
-                || static::starts_with('donotupdate_', $key)
+                || static::starts_with($key, 'donotupdate_')
             ) {
                 unset($cleardata->$key);
             }
