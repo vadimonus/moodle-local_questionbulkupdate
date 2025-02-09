@@ -26,9 +26,13 @@ namespace qbank_bulkupdate;
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->libdir . '/adminlib.php');
 require_once($CFG->libdir . '/formslib.php');
 require_once($CFG->dirroot . '/question/type/multichoice/questiontype.php');
+
+use core_question\local\bank\question_edit_contexts;
+use moodleform;
+use MoodleQuickForm;
+use qtype_multichoice;
 
 /**
  * Form for selecting category and question options.
@@ -37,7 +41,7 @@ require_once($CFG->dirroot . '/question/type/multichoice/questiontype.php');
  * @copyright  2021 Vadim Dvorovenko <Vadimon@mail.ru>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class form extends \moodleform {
+class form extends moodleform {
 
     /**
      * @var string
@@ -79,14 +83,14 @@ class form extends \moodleform {
     /**
      * Definition for select category block.
      *
-     * @param \MoodleQuickForm $mform
+     * @param MoodleQuickForm $mform
      * @param \context $context
      * @throws \coding_exception
      */
-    protected function definition_select_category(\MoodleQuickForm $mform, $context) {
+    protected function definition_select_category(MoodleQuickForm $mform, $context) {
         $mform->addElement('header', 'header', get_string('selectcategoryheader', 'qbank_bulkupdate'));
 
-        $qcontexts = new \question_edit_contexts($context);
+        $qcontexts = new question_edit_contexts($context);
         $contexts = $qcontexts->having_one_cap([
             'moodle/question:editall',
             'moodle/question:editmine',
@@ -110,23 +114,15 @@ class form extends \moodleform {
     /**
      * Definition for common options block.
      *
-     * @param \MoodleQuickForm $mform
+     * @param MoodleQuickForm $mform
      * @throws \coding_exception
      */
     protected function definition_common($mform) {
-        global $CFG;
-
         $mform->addElement('header', 'header', get_string('commonoptionsheader', 'qbank_bulkupdate'));
-
-        if ($CFG->version >= 2019052000.00) { // Moodle 3.7.
-            $floattype = 'float';
-        } else {
-            $floattype = 'text';
-        }
 
         $elements = [];
         $elements[] = $mform->createElement(
-            $floattype,
+            'float',
             'defaultmark',
             get_string('defaultmark', 'question'),
             ['size' => 7]
@@ -156,7 +152,7 @@ class form extends \moodleform {
     /**
      * Definition for multichoice question options.
      *
-     * @param \MoodleQuickForm $mform
+     * @param MoodleQuickForm $mform
      * @throws \coding_exception
      */
     protected function definition_multichoice($mform) {
@@ -176,19 +172,17 @@ class form extends \moodleform {
             get_string('answernumbering', 'qtype_multichoice'),
             array_merge(
                 [-1 => get_string('donotupdate', 'qbank_bulkupdate')],
-                \qtype_multichoice::get_numbering_styles()
+                qtype_multichoice::get_numbering_styles()
             )
         );
         $mform->setDefault('multichoice_answernumbering', -1);
 
-        if (\get_component_version('qtype_multichoice') >= 2020041600) {
-            $mform->addElement(
-                'select',
-                'multichoice_showstandardinstruction',
-                get_string('showstandardinstruction', 'qtype_multichoice'),
-                $this->yesnodonotchange
-            );
-            $mform->setDefault('multichoice_showstandardinstruction', -1);
-        }
+        $mform->addElement(
+            'select',
+            'multichoice_showstandardinstruction',
+            get_string('showstandardinstruction', 'qtype_multichoice'),
+            $this->yesnodonotchange
+        );
+        $mform->setDefault('multichoice_showstandardinstruction', -1);
     }
 }
