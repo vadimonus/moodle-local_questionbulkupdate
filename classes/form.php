@@ -123,12 +123,12 @@ class form extends moodleform {
         $elements = [];
         $elements[] = $mform->createElement(
             'float',
-            'defaultmark',
+            'common_defaultmark',
             get_string('defaultmark', 'question'),
             ['size' => 7]
         );
-        $mform->setType('defaultmark', PARAM_FLOAT);
-        $mform->disabledIf('defaultmark', 'donotupdate_defaultmark', 'checked');
+        $mform->setType('common_defaultmark', PARAM_FLOAT);
+        $mform->disabledIf('common_defaultmark', 'donotupdate_defaultmark', 'checked');
         $elements[] = $mform->createElement(
             'checkbox',
             'donotupdate_defaultmark',
@@ -143,10 +143,10 @@ class form extends moodleform {
         }
         $mform->addElement(
             'select',
-            'penalty',
+            'common_penalty',
             get_string('penaltyforeachincorrecttry', 'question'),
             $penaltyoptions);
-        $mform->setDefault('penalty', -1);
+        $mform->setDefault('common_penalty', -1);
     }
 
     /**

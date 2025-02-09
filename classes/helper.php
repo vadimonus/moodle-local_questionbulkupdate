@@ -25,6 +25,7 @@
 namespace qbank_bulkupdate;
 
 use context;
+use core\event\question_created;
 use core\event\question_updated;
 use core\notification;
 use question_bank;
@@ -145,7 +146,8 @@ class helper {
         global $DB, $USER;
 
         $modified = false;
-        foreach ($data as $key => $value) {
+        $commondata = static::data_for_question_update($data);
+        foreach ($commondata as $key => $value) {
             if (property_exists($question, $key)) {
                 $question->$key = $value;
                 $modified = true;
@@ -164,7 +166,7 @@ class helper {
             // Purge this question from the cache.
             question_bank::notify_question_edited($question->id);
             // Trigger event.
-            $event = question_updated::create_from_question_instance($question, $context);
+            $event = question_created::create_from_question_instance($question, $context);
             $event->trigger();
         }
     }
@@ -183,6 +185,24 @@ class helper {
             default:
                 return false;
         }
+    }
+
+    /**
+     * Extracts values, intended for all question types
+     *
+     * @param object $formdata
+     * @return object
+     */
+    protected static function data_for_question_update($formdata) {
+        $questiondata = new stdClass();
+        foreach ($formdata as $key => $value) {
+            if (!static::starts_with($key, 'common_')) {
+                continue;
+            }
+            $questionkey = substr($key, strlen('common_'));
+            $questiondata->$questionkey = $value;
+        }
+        return $questiondata;
     }
 
     /**
