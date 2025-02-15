@@ -159,7 +159,7 @@ class helper {
         $modified = false;
         $commondata = static::data_for_question_update($data);
         foreach ($commondata as $key => $value) {
-            if (property_exists($question, $key)) {
+            if (property_exists($question, $key) && $question->$key != $value) {
                 $question->$key = $value;
                 $modified = true;
             }
@@ -270,7 +270,7 @@ class helper {
         global $DB;
         $options = $DB->get_record($table, ['questionid' => $question->id]);
         foreach ($data as $key => $value) {
-            if (property_exists($options, $key)) {
+            if (property_exists($options, $key) && $options->$key != $value) {
                 $options->$key = $value;
                 $modified = true;
             }
