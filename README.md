@@ -3,7 +3,7 @@ Questions bulk update Moodle plugin
 
 Requirements
 ------------
-- Moodle 3.1 (build 2016052300) or later.
+- Moodle 4.0 (build 2022041900) or later.
 
 Installation
 ------------
@@ -30,3 +30,6 @@ Changes
     - Initial release.
 - Release 1.0 (build 2021092400):
     - Fix errors in 3.1 - 3.6.
+- Release 2.0 (build 2025021500)
+    - Renamed from local_questionbulkupdate to qbank_bulkupdate.
+    - Refactored for Moodle 4 question bank changes.

@@ -25,10 +25,10 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'qbank_bulkupdate';
-$plugin->version   = 2021092402;
-$plugin->release = '1.0';
+$plugin->version   = 2025021500;
+$plugin->release = '2.0';
 $plugin->maturity = MATURITY_STABLE;
-$plugin->requires  = 2016052300; // Moodle 3.1.
+$plugin->requires  = 2022041900; // Moodle 4.0.
 $plugin->dependencies = [
-    'qtype_multichoice' => 2015111600,
+    'qtype_multichoice' => 2022041900,
 ];
