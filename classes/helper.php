@@ -122,7 +122,7 @@ class helper {
         $questions = $DB->get_recordset_sql($sql, $params);
         $count = 0;
         foreach ($questions as $question) {
-            static::update_question($question, $data, $context);
+            static::update_question($question, $data, $context, $categoryid);
             $count++;
         }
         $questions->close();
@@ -150,9 +150,10 @@ class helper {
      * @param object $question
      * @param object $data
      * @param context $context
+     * @param int $categoryid
      * @return void
      */
-    protected static function update_question($question, $data, $context) {
+    protected static function update_question($question, $data, $context, $categoryid) {
         global $DB, $USER;
 
         $modified = false;
@@ -175,7 +176,8 @@ class helper {
             // Purge this question from the cache.
             question_bank::notify_question_edited($question->id);
             // Trigger event.
-            $event = question_created::create_from_question_instance($question, $context);
+            $question->category = $categoryid;
+            $event = question_updated::create_from_question_instance($question, $context);
             $event->trigger();
         }
     }
