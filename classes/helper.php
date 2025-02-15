@@ -170,9 +170,8 @@ class helper {
         if ($modified) {
             $question->timemodified = time();
             $question->modifiedby = $USER->id;
-            // Give the question a unique version stamp determined by question_hash().
-            $question->version = question_hash($question);
             $DB->update_record('question', $question);
+            static::increase_question_version($question);
             // Purge this question from the cache.
             question_bank::notify_question_edited($question->id);
             // Trigger event.
@@ -278,5 +277,20 @@ class helper {
             $DB->update_record($table, $options);
         }
         return $modified;
+    }
+
+    /**
+     * Increases question version.
+     *
+     * @param object $question
+     * @return void
+     */
+    protected static function increase_question_version($question) {
+        global $DB;
+        $questionversion = $DB->get_record('question_versions', ['questionid' => $question->id]);
+        $newquestionversion = new stdClass();
+        $newquestionversion->id = $questionversion->id;
+        $newquestionversion->version = ($questionversion->version ?? 0) + 1;
+        $DB->update_record('question_versions', $newquestionversion);
     }
 }
