@@ -169,6 +169,9 @@ class helper {
         $modified = $modified || $optionsmodified;
 
         if ($modified) {
+            $question->stamp = make_unique_id_code();
+            $question->timecreated = time();
+            $question->createdby = $USER->id;
             $question->timemodified = time();
             $question->modifiedby = $USER->id;
             $DB->update_record('question', $question);
