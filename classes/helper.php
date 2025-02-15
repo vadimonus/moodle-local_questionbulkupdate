@@ -268,6 +268,7 @@ class helper {
      */
     protected static function update_generic_options_table($question, $data, $table) {
         global $DB;
+        $modified = false;
         $options = $DB->get_record($table, ['questionid' => $question->id]);
         foreach ($data as $key => $value) {
             if (property_exists($options, $key) && $options->$key != $value) {
