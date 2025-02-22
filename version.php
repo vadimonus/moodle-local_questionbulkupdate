@@ -25,7 +25,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'qbank_bulkupdate';
-$plugin->version   = 2025021500;
+$plugin->version   = 2025021501;
 $plugin->release = '2.0';
 $plugin->maturity = MATURITY_STABLE;
 $plugin->requires  = 2022041900; // Moodle 4.0.

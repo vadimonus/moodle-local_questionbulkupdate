@@ -26,7 +26,6 @@ namespace qbank_bulkupdate;
 
 use context;
 use core\event\question_created;
-use core\event\question_updated;
 use core\notification;
 use core_question\local\bank\question_version_status;
 use question_bank;
@@ -180,7 +179,7 @@ class helper {
             question_bank::notify_question_edited($question->id);
             // Trigger event.
             $question->category = $categoryid;
-            $event = question_updated::create_from_question_instance($question, $context);
+            $event = question_created::create_from_question_instance($question, $context);
             $event->trigger();
         }
     }
