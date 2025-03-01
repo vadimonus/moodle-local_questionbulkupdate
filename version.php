@@ -25,10 +25,10 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'local_questionbulkupdate';
-$plugin->version   = 2021092402;
-$plugin->release = '1.0';
+$plugin->version   = 2025030100;
+$plugin->release = '2.0';
 $plugin->maturity = MATURITY_STABLE;
-$plugin->requires  = 2016052300; // Moodle 3.1.
-$plugin->dependencies = array(
-    'qtype_multichoice' => 2015111600,
-);
+$plugin->requires  = 2022041900; // Moodle 4.0.
+$plugin->dependencies = [
+    'qbank_bulkupdate' => 2025012600,
+];

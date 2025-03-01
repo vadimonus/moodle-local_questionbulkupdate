@@ -25,7 +25,7 @@
 $string['commonoptionsheader'] = 'Common options';
 $string['donotupdate'] = 'Do not update';
 $string['navandheader'] = 'Questions bulk update';
-$string['pluginname'] = 'Questions bulk update';
+$string['pluginname'] = 'Questions bulk update (Legacy, use qbank_bulkupdate)';
 $string['privacy:metadata'] = 'The plugin does not store any personal data.';
 $string['processed'] = '{$a} questions processed';
 $string['selectcategoryheader'] = 'Select category to update questions';
